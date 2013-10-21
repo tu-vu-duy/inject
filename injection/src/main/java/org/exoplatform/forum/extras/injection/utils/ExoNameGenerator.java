@@ -23,8 +23,8 @@ public class ExoNameGenerator {
   static final String[] middle = {"au","be","bi","bo","bu","da","fri","gu","gus","nul","hn", "uy", "a"};
   static final String[] surfix =   {"cio","cus","es","ius","lius","lus","nus","tin","tor","tus", "en", "ng"};
 
-  static final String[] prefix_ = {"n","a","b","c","h","m","d", "n", "l", "ng", "kh", "k", "s", "t", "nh", "qu", "tr", "v"};
-  static final String[] surfix_ =   {"a","ao","am","an","anh","ang", "y", "iem","im","in","ing","ien","inh","on","om", "ong", "oc", 
+  static final String[] prefix_ = {"n","b","c","h", "ch","m","d", "n", "l", "ng", "kh", "k", "s", "t", "nh", "qu", "tr", "v"};
+  static final String[] surfix_ =   {"a","ao","am","an","anh","ang", "y", "iem","im","in","ien","inh","on","om", "ong", "oc", 
                                        "oi", "u", "uyen", "uong", "uoc", "e", "em", "en"};
   static final String[] middle_ = {"nguyen","vu","do","le","lai","ho","ly","tran","pham","kieu","ha", "mai", "luu", "dao"};
   
@@ -80,14 +80,14 @@ public class ExoNameGenerator {
       
       if(first.length() > 0) {
         if(type.equals("all")) {
-          name.append(compose(3));
-        } else if(type.equals("v")) {
+          name.append(compose(syls));
+        } else if(type.equals("vn")) {
           name.append(getVWord());
         } else {
           name.append(first);
         }
       } else {
-        if(type.equals("v")) {
+        if(type.indexOf("v") == 0) {
           name.append(upper(middle_[(int) (Math.random() * middle_.length)]));
           name.append(" ").append(getVWord());
         } else {
@@ -102,10 +102,41 @@ public class ExoNameGenerator {
     StringBuffer name = new StringBuffer();
     name.append(prefix_[(int) (Math.random() * prefix_.length)]);
     String l = surfix_[(int) (Math.random() * surfix_.length)];
-    if (name.equals("ng") && (l.indexOf("i") == 0 || l.indexOf("e") == 0)) {
-      name.append("h");
+    if (name.indexOf("ng") == 0) {
+      if(l.indexOf("i") == 0 || l.indexOf("e") == 0) {
+        name.append("h");
+      }
+      if(l.equals("y")) {
+        l = "uyen";
+      }
     }
+    if (name.indexOf("qu") == 0) {
+      if (l.equals("u")) {
+        l = "ynh";
+      }
+      if (l.equals("em")) {
+        l = "en";
+      }
+      if (l.equals("inh")) {
+        l = "ynh";
+      }
+      if (l.indexOf("u") == 0) {
+        l = l.replaceFirst("u", "");
+      }
+    }
+    if (name.indexOf("c") == 0) {
+      if (l.startsWith("i") || l.startsWith("e")) {
+        name = new StringBuffer("k");
+      }
+    }
+    
+    if (name.indexOf("k") == 0) {
+      if (l.startsWith("u")) {
+        name = new StringBuffer("c");
+      }
+    }
+    
     name.append(l);
-    return upper(name.toString());
+    return upper(name.toString().replace("ken", "kien"));
   }
 }
