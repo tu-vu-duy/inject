@@ -27,6 +27,7 @@ import java.util.concurrent.ThreadFactory;
 
 import org.exoplatform.commons.utils.CommonsUtils;
 import org.exoplatform.forum.bbcode.api.BBCodeService;
+import org.exoplatform.forum.extras.injection.SessionProviderServiceImpl;
 import org.exoplatform.forum.extras.injection.utils.ExoNameGenerator;
 import org.exoplatform.forum.extras.injection.utils.LoremIpsum4J;
 import org.exoplatform.forum.service.Category;
@@ -246,7 +247,6 @@ public class MultiForumInjector extends DataInjector {
         ForumBuild forumBuild = new ForumBuild();
         forumBuild.setName(forum_ + String.valueOf(i));
         forumBuild.setPath(e.getId());
-        
         executor.submit(forumBuild);
       }
     }
@@ -395,7 +395,11 @@ public class MultiForumInjector extends DataInjector {
     
     @Override
     public E call() throws Exception {
+      SessionProviderServiceImpl service = CommonsUtils.getService(SessionProviderServiceImpl.class);
+      String key = path+name;
+      service.setSystemSessionProvider(key);
       E e = build(name, path);
+      service.closeSessionProvider(key);
       callback(e);
       return e;
     }
