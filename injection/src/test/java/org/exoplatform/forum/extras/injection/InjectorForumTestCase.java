@@ -32,6 +32,7 @@ import org.exoplatform.forum.extras.injection.forum.MembershipInjector;
 import org.exoplatform.forum.extras.injection.forum.PostInjector;
 import org.exoplatform.forum.extras.injection.forum.ProfileInjector;
 import org.exoplatform.forum.extras.injection.forum.TopicInjector;
+import org.exoplatform.forum.extras.injection.multi.MultiForumInjector;
 import org.exoplatform.services.organization.OrganizationService;
 
 /**
@@ -69,17 +70,17 @@ public class InjectorForumTestCase extends BaseInjectorTestCase {
 
     if(forumService == null){
       //
-      profileInjector = (ProfileInjector) getContainer().getComponentInstanceOfType(ProfileInjector.class);
-      categoryInjector = (CategoryInjector) getContainer().getComponentInstanceOfType(CategoryInjector.class);
-      forumInjector = (ForumInjector) getContainer().getComponentInstanceOfType(ForumInjector.class);
-      topicInjector = (TopicInjector) getContainer().getComponentInstanceOfType(TopicInjector.class);
-      postInjector = (PostInjector) getContainer().getComponentInstanceOfType(PostInjector.class);
-      membershipInjector = (MembershipInjector) getContainer().getComponentInstanceOfType(MembershipInjector.class);
-      attachmentInjector = (AttachmentInjector) getContainer().getComponentInstanceOfType(AttachmentInjector.class);
+      profileInjector = getService(ProfileInjector.class);
+      categoryInjector = getService(CategoryInjector.class);
+      forumInjector = getService(ForumInjector.class);
+      topicInjector = getService(TopicInjector.class);
+      postInjector = getService(PostInjector.class);
+      membershipInjector = getService(MembershipInjector.class);
+      attachmentInjector = getService(AttachmentInjector.class);
       
       //
-      organizationService = (OrganizationService) getContainer().getComponentInstanceOfType(OrganizationService.class);
-      forumService = (ForumService) getContainer().getComponentInstanceOfType(ForumService.class);
+      organizationService = getService(OrganizationService.class);
+      forumService = getService(ForumService.class);
     }
     
     assertNotNull(membershipInjector);
@@ -186,6 +187,30 @@ public class InjectorForumTestCase extends BaseInjectorTestCase {
   
   public void testPrefixMembership() throws Exception {
     performMembershipTest("foo", "bar", "forum", "topic");
+  }
+
+  public void testMultiForumInjector() throws Exception {
+    MultiForumInjector multiForumInjector = getService(MultiForumInjector.class);
+    params.clear();
+    params.put("category", "2");
+    params.put("forum", "2");
+    params.put("topic", "0");
+    params.put("post", "0");
+    params.put("categoryPrefix", "cateinj_");
+    params.put("forumPrefix", "forinj_");
+    params.put("topicPrefix", "toinj_");
+    params.put("postPrefix", "poinj_");
+    params.put("fromUser", "1");
+    params.put("toUser", "2");
+    params.put("userPrefix", "user");
+
+    params.put("number", "5");
+    params.put("prefix", "user");
+    
+    //
+    profileInjector.inject(params);
+    //
+    multiForumInjector.inject(params);
   }
   
   private void performProfileTest(String prefix) throws Exception {

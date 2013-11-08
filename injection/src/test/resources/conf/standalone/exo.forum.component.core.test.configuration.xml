@@ -36,6 +36,10 @@
   
   <!-- Forum Injector Definition-->
   <component>
+    <type>org.exoplatform.forum.extras.injection.multi.MultiForumInjector</type>
+  </component>
+
+  <component>
     <type>org.exoplatform.forum.extras.injection.forum.ProfileInjector</type>
   </component>
 
