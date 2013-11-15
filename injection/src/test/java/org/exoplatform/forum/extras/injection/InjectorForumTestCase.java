@@ -194,8 +194,8 @@ public class InjectorForumTestCase extends BaseInjectorTestCase {
     params.clear();
     params.put("category", "2");
     params.put("forum", "2");
-    params.put("topic", "0");
-    params.put("post", "0");
+    params.put("topic", "3");
+    params.put("post", "3");
     params.put("categoryPrefix", "cateinj_");
     params.put("forumPrefix", "forinj_");
     params.put("topicPrefix", "toinj_");

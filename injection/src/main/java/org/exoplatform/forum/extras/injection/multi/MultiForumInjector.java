@@ -38,6 +38,7 @@ import org.exoplatform.forum.service.Post;
 import org.exoplatform.forum.service.Topic;
 import org.exoplatform.forum.service.Utils;
 import org.exoplatform.services.bench.DataInjector;
+import org.exoplatform.services.jcr.ext.app.SessionProviderService;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.services.log.Log;
 
@@ -95,7 +96,7 @@ public class MultiForumInjector extends DataInjector {
     
     ThreadFactory threadFactory = new ThreadFactory() {
       public Thread newThread(Runnable arg0) {
-        return new Thread(arg0, "DownLoadSiteThead-" + (threadCounter++));
+        return new Thread(arg0, "MultiForumInjector-" + (threadCounter++));
       }
     };
     executor = Executors.newFixedThreadPool(2, threadFactory);
@@ -395,11 +396,10 @@ public class MultiForumInjector extends DataInjector {
     
     @Override
     public E call() throws Exception {
-      SessionProviderServiceImpl service = CommonsUtils.getService(SessionProviderServiceImpl.class);
-      String key = path+name;
-      service.setSystemSessionProvider(key);
+      SessionProviderServiceImpl service = (SessionProviderServiceImpl)CommonsUtils.getService(SessionProviderService.class);
+      LOG.info("Building " + name + " of the path: " + path);
       E e = build(name, path);
-      service.closeSessionProvider(key);
+      service.closeSessionProvider();
       callback(e);
       return e;
     }
