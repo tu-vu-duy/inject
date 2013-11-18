@@ -21,13 +21,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.Future;
 
 import org.exoplatform.commons.utils.CommonsUtils;
 import org.exoplatform.forum.bbcode.api.BBCodeService;
 import org.exoplatform.forum.extras.injection.SessionProviderServiceImpl;
+import org.exoplatform.forum.extras.injection.lifecycle.LifeCycleCompletionService;
 import org.exoplatform.forum.extras.injection.utils.ExoNameGenerator;
 import org.exoplatform.forum.extras.injection.utils.LoremIpsum4J;
 import org.exoplatform.forum.service.Category;
@@ -84,23 +83,17 @@ public class MultiForumInjector extends DataInjector {
   String user_ = "";
   String owner = "";
   String [] users = new String[] {};
-  
-  private ExecutorService                executor;
-  private int                            threadCounter = 0;
+
+  private LifeCycleCompletionService completionService;
+
   protected final ForumService forumService;
   protected LoremIpsum4J lorem;
   protected ExoNameGenerator exoNameGenerator;
 
   public MultiForumInjector() {
     forumService = CommonsUtils.getService(ForumService.class);
+    completionService = CommonsUtils.getService(LifeCycleCompletionService.class);
     
-    ThreadFactory threadFactory = new ThreadFactory() {
-      public Thread newThread(Runnable arg0) {
-        return new Thread(arg0, "MultiForumInjector-" + (threadCounter++));
-      }
-    };
-    executor = Executors.newFixedThreadPool(2, threadFactory);
-
     this.exoNameGenerator = new ExoNameGenerator();
     this.lorem = new LoremIpsum4J();
   }
@@ -153,10 +146,10 @@ public class MultiForumInjector extends DataInjector {
     owner = user_ + from;
     
     //
-    LOG.info("Initial category number: " + cate_ + " prefix: " + cate);
-    LOG.info("Initial forum number : " + forum_ + " prefix: " + forum);
-    LOG.info("Initial topic number : " + topic_ + " prefix: " + topic);
-    LOG.info("Initial post number : " + post_ + " prefix: " + post);
+    LOG.info("Initial category number: " + cate + " prefix: " + cate_);
+    LOG.info("Initial forum number : " + forum + " prefix: " + forum_);
+    LOG.info("Initial topic number : " + topic + " prefix: " + topic_);
+    LOG.info("Initial post number : " + post + " prefix: " + post_);
     LOG.info("From user : " + from);
     LOG.info("To user : " + to);
     
@@ -182,10 +175,7 @@ public class MultiForumInjector extends DataInjector {
   
   protected int intParam(HashMap<String, String> params, String name, int df) {
     try {
-      String value = strParam(params, name, null);
-      if (value != null) {
-        return Integer.valueOf(value);
-      }
+      return Integer.valueOf(strParam(params, name, null));
     } catch (NumberFormatException e) {
       getLog().warn("Integer number expected for property " + name);
     }
@@ -199,9 +189,10 @@ public class MultiForumInjector extends DataInjector {
     }
     //
     try {
-      return params.get(name);
-    } catch (NumberFormatException e) {
-      getLog().warn("Integer number expected for property " + name);
+      String value = params.get(name);
+      if (value != null) {
+        return value;
+      }
     } catch (Exception e) {
       getLog().warn("Can not get value of param" + name, e);
     }
@@ -218,11 +209,34 @@ public class MultiForumInjector extends DataInjector {
   }
   
   private void makeCategories() {
+    List<Future> futures = new ArrayList<Future>();
     for (int i = 0; i < cate; i++) {
       BuildCategory buildCategory = new BuildCategory();
       buildCategory.setName(cate_ + String.valueOf(i));
-      executor.submit(buildCategory);
+      futures.add(completionService.addTaskNotConf(buildCategory));
     }
+    SessionProviderService providerService = CommonsUtils.getService(SessionProviderService.class);
+    if (providerService instanceof SessionProviderServiceImpl) {
+      boolean isDone = false;
+
+      while (isDone == false) {
+        isDone = true;
+        for (Future future : futures) {
+          if (future.isDone() == false) {
+            isDone = false;
+            break;
+          }
+        }
+        if (isDone == false) {
+          try {
+            Thread.sleep(1000);
+          } catch (InterruptedException e) {
+            e.printStackTrace();
+          }
+        }
+      }
+    }
+
   }
   
   class BuildCategory extends BuildObject<Category>{
@@ -248,7 +262,7 @@ public class MultiForumInjector extends DataInjector {
         ForumBuild forumBuild = new ForumBuild();
         forumBuild.setName(forum_ + String.valueOf(i));
         forumBuild.setPath(e.getId());
-        executor.submit(forumBuild);
+        completionService.addTask(forumBuild);
       }
     }
     
@@ -262,7 +276,7 @@ public class MultiForumInjector extends DataInjector {
         TopicBuild topicBuild = new TopicBuild();
         topicBuild.setName(topic_ + String.valueOf(i));
         topicBuild.setPath(e.getPath());
-        executor.submit(topicBuild);
+        completionService.addTask(topicBuild);
       }
     }
 
@@ -396,10 +410,12 @@ public class MultiForumInjector extends DataInjector {
     
     @Override
     public E call() throws Exception {
-      SessionProviderServiceImpl service = (SessionProviderServiceImpl)CommonsUtils.getService(SessionProviderService.class);
       LOG.info("Building " + name + " of the path: " + path);
       E e = build(name, path);
-      service.closeSessionProvider();
+      SessionProviderService providerService = CommonsUtils.getService(SessionProviderService.class);
+      if(providerService instanceof SessionProviderServiceImpl) {
+        ((SessionProviderServiceImpl)providerService).closeSessionProvider();
+      }
       callback(e);
       return e;
     }
