@@ -53,13 +53,12 @@ public class AnswerInjector extends AbstractFAQInjector {
         answerName = answerName();
        
         //
-        answer = new Answer();
+        answer = new Answer(question.getAuthor(), true);
         answer.setFullName(answerName);
         answer.setLanguage("English");
         answer.setMarksVoteAnswer(0.0);
         answer.setMarkVotes(0);
         answer.setNew(true);
-        answer.setResponseBy(question.getAuthor());
         answer.setResponses(lorem.getParagraphs(1));
         
         //

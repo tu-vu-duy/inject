@@ -66,7 +66,7 @@ public class MultiForumInjector extends DataInjector {
   /** . */
   private static final String POST_PREFIX  = "postPrefix";
   
-  private static List<String> supportBBcodes = new ArrayList<String>();
+  private List<String> supportBBcodes = new ArrayList<String>();
   
   int cate = 0;
   int forum = 0;
@@ -96,16 +96,16 @@ public class MultiForumInjector extends DataInjector {
     
     this.exoNameGenerator = new ExoNameGenerator();
     this.lorem = new LoremIpsum4J();
+    initBBcode();
   }
   
-  static {
+  private void initBBcode() {
     try {
-      supportBBcodes.clear();
       List<String> supportBBcodes = CommonsUtils.getService(BBCodeService.class).getActive();
       String bbcodeIgnore = "wiki url email img";
       for (String bbcode : supportBBcodes) {
         if (bbcode.indexOf("=") < 0 && bbcodeIgnore.indexOf(bbcode.toLowerCase()) < 0) {
-          MultiForumInjector.supportBBcodes.add(bbcode);
+          this.supportBBcodes.add(bbcode);
         }
       }
     } catch (Exception e) {
@@ -213,7 +213,8 @@ public class MultiForumInjector extends DataInjector {
     for (int i = 0; i < cate; i++) {
       BuildCategory buildCategory = new BuildCategory();
       buildCategory.setName(cate_ + String.valueOf(i));
-      futures.add(completionService.addTaskNotConf(buildCategory));
+//      futures.add(completionService.addTaskNotConf(buildCategory));
+      completionService.addTask(buildCategory);
     }
     SessionProviderService providerService = CommonsUtils.getService(SessionProviderService.class);
     if (providerService instanceof SessionProviderServiceImpl) {
