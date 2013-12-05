@@ -70,6 +70,9 @@ public class AttachmentInjector extends AbstractForumInjector {
 
     init(null, null, null, null, postPrefix, byteSize);
 
+    Topic topic = null;
+    Forum forum = null;
+    Category cat = null;
     //
     for (int i = fromPost; i <= toPost; ++i) {
 
@@ -80,10 +83,11 @@ public class AttachmentInjector extends AbstractForumInjector {
         getLog().info("post name is '" + postName + "' wrong. Please set it exactly. Aborting injection ..." );
         return;
       }
-      Topic topic = getTopicByPostName(postName);
-      Forum forum = getForumByTopicName(topic.getTopicName());
-      Category cat = getCategoryByForumName(forum.getForumName());
-      
+      if(topic == null) {
+        topic = forumService.getTopic(post.getCategoryId(), post.getForumId(), post.getTopicId(), null);
+        forum = forumService.getForum(topic.getCategoryId(), topic.getForumId());
+        cat = forumService.getCategory(topic.getCategoryId());
+      }
       //
       
       generateAttachments(post, POST_PREFIX, number, byteSize);

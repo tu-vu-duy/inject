@@ -74,8 +74,7 @@ public class TopicInjector extends AbstractForumInjector {
       getLog().info("forum name is '" + forumName + "' wrong. Please set it exactly. Aborting injection ..." );
       return;
     }
-
-    Category cat = getCategoryByForumName(forumName);
+    Category cat = forumService.getCategory(forum.getCategoryId());
     
     //
     for (int i = fromUser; i <= toUser; ++i) {

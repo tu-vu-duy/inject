@@ -210,7 +210,7 @@ public abstract class AbstractForumInjector extends DataInjector {
   public int userNumber(String base) throws Exception {
     StringBuffer sb = new StringBuffer(Utils.JCR_ROOT);
     sb.append("/").append(locator.getUserProfilesLocation()).append("/element(*,");
-    sb.append(Utils.USER_PROFILES_TYPE).append(")[jcr:like(exo:userId, '%").append(base).append("%')]");
+    sb.append(Utils.USER_PROFILES_TYPE).append(")[jcr:like(exo:userId, '").append(base).append("%')]");
     
     return (int)forumService.search(sb.toString()).getSize();
   }
@@ -218,7 +218,7 @@ public abstract class AbstractForumInjector extends DataInjector {
   public int categoryNumber(String base) throws Exception {
     StringBuffer sb = new StringBuffer(Utils.JCR_ROOT);
     sb.append("/").append(locator.getForumCategoriesLocation()).append("/element(*,");
-    sb.append(Utils.EXO_FORUM_CATEGORY).append(")[jcr:like(exo:name, '%").append(base).append("%')]");
+    sb.append(Utils.EXO_FORUM_CATEGORY).append(")[jcr:like(exo:name, '").append(base).append("%')]");
 
     return (int)forumService.search(sb.toString()).getSize();
   }
@@ -226,7 +226,7 @@ public abstract class AbstractForumInjector extends DataInjector {
   public int forumNumber(String base) throws Exception {
     StringBuffer sb = new StringBuffer(Utils.JCR_ROOT);
     sb.append("/").append(locator.getForumCategoriesLocation()).append("//element(*,");
-    sb.append(Utils.EXO_FORUM).append(")[jcr:like(exo:name, '%").append(base).append("%')]");
+    sb.append(Utils.EXO_FORUM).append(")[jcr:like(exo:name, '").append(base).append("%')]");
 
     return (int)forumService.search(sb.toString()).getSize();
 
@@ -236,7 +236,7 @@ public abstract class AbstractForumInjector extends DataInjector {
   public int topicNumber(String base) throws Exception {
     StringBuffer sb = new StringBuffer(Utils.JCR_ROOT);
     sb.append("/").append(locator.getForumCategoriesLocation()).append("//element(*,");
-    sb.append(Utils.EXO_TOPIC).append(")[jcr:like(exo:name, '%").append(base).append("%')]");
+    sb.append(Utils.EXO_TOPIC).append(")[jcr:like(exo:name, '").append(base).append("%')]");
 
     return (int)forumService.search(sb.toString()).getSize();
 
@@ -245,7 +245,7 @@ public abstract class AbstractForumInjector extends DataInjector {
   public int postNumber(String base) throws Exception {
     StringBuffer sb = new StringBuffer(Utils.JCR_ROOT);
     sb.append("/").append(locator.getForumCategoriesLocation()).append("//element(*,");
-    sb.append(Utils.EXO_POST).append(")[jcr:like(exo:name, '%").append(base).append("%')]");
+    sb.append(Utils.EXO_POST).append(")[jcr:like(exo:name, '").append(base).append("%')]");
 
     return (int)forumService.search(sb.toString()).getSize();
 
@@ -254,7 +254,7 @@ public abstract class AbstractForumInjector extends DataInjector {
   public Category getCategoryByName(String catName) throws Exception {
     StringBuffer sb = new StringBuffer(Utils.JCR_ROOT);
     sb.append("/").append(locator.getForumCategoriesLocation()).append("/element(*,");
-    sb.append(Utils.EXO_FORUM_CATEGORY).append(")[jcr:like(exo:name, '%").append(catName).append("%')]");
+    sb.append(Utils.EXO_FORUM_CATEGORY).append(")[jcr:like(exo:name, '").append(catName).append("')]");
 
     NodeIterator iter =  forumService.search(sb.toString());
     if (iter.hasNext()) {
@@ -279,7 +279,7 @@ public abstract class AbstractForumInjector extends DataInjector {
   public Forum getForumByName(String forumName) throws Exception {
     StringBuffer sb = new StringBuffer(Utils.JCR_ROOT);
     sb.append("/").append(locator.getForumCategoriesLocation()).append("//element(*,");
-    sb.append(Utils.EXO_FORUM).append(")[jcr:like(exo:name, '%").append(forumName).append("%')]");
+    sb.append(Utils.EXO_FORUM).append(")[jcr:like(exo:name, '").append(forumName).append("')]");
 
     NodeIterator iter =  forumService.search(sb.toString());
     if (iter.hasNext()) {

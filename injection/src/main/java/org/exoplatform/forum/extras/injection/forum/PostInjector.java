@@ -97,9 +97,8 @@ public class PostInjector extends AbstractForumInjector {
       getLog().info("topic name is '" + topicName + "' wrong. Please set it exactly. Aborting injection ..." );
       return;
     }
-
-    Forum forum = getForumByTopicName(topicName);
-    Category cat = getCategoryByForumName(forum.getForumName());
+    Forum forum = forumService.getForum(topic.getCategoryId(), topic.getForumId());
+    Category cat = forumService.getCategory(topic.getCategoryId());
     
     //
     for (int i = fromUser; i <= toUser; ++i) {

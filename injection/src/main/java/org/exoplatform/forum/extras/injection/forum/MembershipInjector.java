@@ -108,7 +108,7 @@ public class MembershipInjector extends AbstractForumInjector {
       getLog().info("forum name is '" + forumName + "' is wrong. Please set it exactly. Aborting injection ...");
       return;
     }
-    Category cat = getCategoryByForumName(forumName);
+    Category cat = forumService.getCategory(forum.getCategoryId());
     
     //
     String[] userNames = getUserNames();
