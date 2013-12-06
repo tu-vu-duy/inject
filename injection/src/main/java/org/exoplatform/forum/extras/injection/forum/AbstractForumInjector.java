@@ -303,7 +303,7 @@ public abstract class AbstractForumInjector extends DataInjector {
   public Category getCategoryByForumName(String forumName) throws Exception {
     StringBuffer sb = new StringBuffer(Utils.JCR_ROOT);
     sb.append("/").append(locator.getForumCategoriesLocation()).append("//element(*,");
-    sb.append(Utils.EXO_FORUM).append(")[jcr:like(exo:name, '%").append(forumName).append("%')]");
+    sb.append(Utils.EXO_FORUM).append(")[jcr:like(exo:name, '").append(forumName).append("')]");
     
     NodeIterator iter =  forumService.search(sb.toString());
     if (iter.hasNext()) {
@@ -325,7 +325,7 @@ public abstract class AbstractForumInjector extends DataInjector {
   public Topic getTopicByName(String topicName) throws Exception {
     StringBuffer sb = new StringBuffer(Utils.JCR_ROOT);
     sb.append("/").append(locator.getForumCategoriesLocation()).append("//element(*,");
-    sb.append(Utils.EXO_TOPIC).append(")[jcr:like(exo:name, '%").append(topicName).append("%')]");
+    sb.append(Utils.EXO_TOPIC).append(")[jcr:like(exo:name, '").append(topicName).append("')]");
 
     NodeIterator iter =  forumService.search(sb.toString());
     if (iter.hasNext()) {
@@ -348,7 +348,7 @@ public abstract class AbstractForumInjector extends DataInjector {
   public Post getPostByName(String postName) throws Exception {
     StringBuffer sb = new StringBuffer(Utils.JCR_ROOT);
     sb.append("/").append(locator.getForumCategoriesLocation()).append("//element(*,");
-    sb.append(Utils.EXO_POST).append(")[jcr:like(exo:name, '%").append(postName).append("%')]");
+    sb.append(Utils.EXO_POST).append(")[jcr:like(exo:name, '").append(postName).append("')]");
 
     NodeIterator iter =  forumService.search(sb.toString());
     if (iter.hasNext()) {
