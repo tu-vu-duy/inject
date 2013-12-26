@@ -85,7 +85,7 @@ public class TopicInjector extends AbstractForumInjector {
         String topicName = topicName();
 
         Topic topicNew = new Topic();
-
+        topicNew.setId("topicdatainjectorprefixid_C" + topicNumber(forum.getPath(), topicPrefix));
         topicNew.setOwner(owner);
         topicNew.setTopicName(topicName);
         topicNew.setCreatedDate(new Date());

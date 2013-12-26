@@ -66,6 +66,7 @@ public class ForumInjector extends AbstractForumInjector {
 
       //
       Forum forum = new Forum();
+      forum.setId("forumdatainjectorprefixid_CC" + forumNumber(cat.getId(), forumPrefix));
       forum.setOwner(cat.getOwner());
       forum.setForumName(forumName);
       forum.setForumOrder(1);

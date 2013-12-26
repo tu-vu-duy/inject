@@ -61,6 +61,7 @@ public class CategoryInjector extends AbstractForumInjector {
         String categoryName = categoryName();
 
         Category cat = new Category();
+        cat.setId("forumCategorydatainjectorprefixid_C" + categoryNumber);
         cat.setOwner(owner);
         cat.setCategoryName(categoryName);
         cat.setCategoryOrder(i);

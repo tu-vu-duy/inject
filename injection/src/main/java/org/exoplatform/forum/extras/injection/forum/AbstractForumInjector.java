@@ -231,6 +231,14 @@ public abstract class AbstractForumInjector extends DataInjector {
     return (int)forumService.search(sb.toString()).getSize();
 
   }
+
+  public int forumNumber(String category, String base) throws Exception {
+    StringBuffer sb = new StringBuffer(Utils.JCR_ROOT);
+    sb.append("/").append(locator.getForumCategoriesLocation()).append("/").append(category).append("/element(*,");
+    sb.append(Utils.EXO_FORUM).append(")[jcr:like(exo:name, '").append(base).append("%')]");
+    
+    return (int)forumService.search(sb.toString()).getSize();
+  }
   
   
   public int topicNumber(String base) throws Exception {
@@ -241,6 +249,15 @@ public abstract class AbstractForumInjector extends DataInjector {
     return (int)forumService.search(sb.toString()).getSize();
 
   }
+
+  public int topicNumber(String forumPath, String base) throws Exception {
+    StringBuffer sb = new StringBuffer(Utils.JCR_ROOT);
+    sb.append(forumPath).append("/element(*,");
+    sb.append(Utils.EXO_TOPIC).append(")[jcr:like(exo:name, '").append(base).append("%')]");
+    
+    return (int)forumService.search(sb.toString()).getSize();
+    
+  }
   
   public int postNumber(String base) throws Exception {
     StringBuffer sb = new StringBuffer(Utils.JCR_ROOT);
@@ -249,6 +266,15 @@ public abstract class AbstractForumInjector extends DataInjector {
 
     return (int)forumService.search(sb.toString()).getSize();
 
+  }
+
+  public int postNumber(String topicPath, String base) throws Exception {
+    StringBuffer sb = new StringBuffer(Utils.JCR_ROOT);
+    sb.append(topicPath).append("//element(*,");
+    sb.append(Utils.EXO_POST).append(")[jcr:like(exo:name, '").append(base).append("%')]");
+    
+    return (int)forumService.search(sb.toString()).getSize();
+    
   }
 
   public Category getCategoryByName(String catName) throws Exception {
