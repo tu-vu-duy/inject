@@ -21,13 +21,13 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <artifactId>maven-parent-pom</artifactId>
- 		<groupId>org.exoplatform</groupId>
-    <version>13</version>
+    <groupId>org.exoplatform</groupId>
+    <version>14</version>
     <relativePath />
   </parent>
   <groupId>org.exoplatform.injection</groupId>
   <artifactId>injection</artifactId>
-  <version>4.1.x-SNAPSHOT</version>
+  <version>4.2.x-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>Forum Injection</name>
   <description>Forum Injection</description>
@@ -37,7 +37,7 @@
   <properties>
     <!-- Dependencies versions -->
     <!-- **************************************** -->
-    <org.exoplatform.depmgt.version>9-SNAPSHOT</org.exoplatform.depmgt.version>
+    <org.exoplatform.depmgt.version>10-SNAPSHOT</org.exoplatform.depmgt.version>
     <!-- JCR Project Dependencies -->
     <org.exoplatform.kernel.version>2.4.x-SNAPSHOT</org.exoplatform.kernel.version>
     <org.exoplatform.core.version>2.5.x-SNAPSHOT</org.exoplatform.core.version>
@@ -49,8 +49,8 @@
     <org.gatein.wci.version>2.3.0.Final</org.gatein.wci.version>
     <org.gatein.portal.version>3.5.x-PLF-SNAPSHOT</org.gatein.portal.version>
     <!-- Platform Project Dependencies -->
-    <org.exoplatform.commons.version>4.1.x-SNAPSHOT</org.exoplatform.commons.version>
-    <org.exoplatform.forum.version>4.1.x-SNAPSHOT</org.exoplatform.forum.version>
+    <org.exoplatform.commons.version>4.2.x-SNAPSHOT</org.exoplatform.commons.version>
+    <org.exoplatform.forum.version>4.2.x-SNAPSHOT</org.exoplatform.forum.version>
   </properties>
   <dependencyManagement>
     <!-- ### NEVER CHANGE THIS ORDER OF DEPMGT ### -->

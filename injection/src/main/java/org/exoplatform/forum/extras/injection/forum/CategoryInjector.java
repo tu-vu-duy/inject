@@ -27,19 +27,19 @@ import org.exoplatform.forum.service.Category;
  */
 public class CategoryInjector extends AbstractForumInjector {
   /** . */
-  private static final String NUMBER = "number";
+  public static final String NUMBER = "number";
 
   /** . */
-  private static final String FROM_USER = "fromUser";
+  public static final String FROM_USER = "fromUser";
 
   /** . */
-  private static final String TO_USER = "toUser";
+  public static final String TO_USER = "toUser";
 
   /** . */
-  private static final String USER_PREFIX = "userPrefix";
+  public static final String USER_PREFIX = "userPrefix";
 
   /** . */
-  private static final String CATEGORY_PREFIX = "catPrefix";
+  public static final String CATEGORY_PREFIX = "catPrefix";
 
   @Override
   public void inject(HashMap<String, String> params) throws Exception {

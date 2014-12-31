@@ -58,7 +58,6 @@ public class UserInjector extends DataInjector {
     String[] userNames = users.split(",");
     //
     for (int i = 0; i < userNames.length; ++i) {
-
       //
       String userName = userNames[i].trim().replace(" ", "_").toLowerCase();
 

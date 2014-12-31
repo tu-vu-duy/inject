@@ -4,7 +4,7 @@
   <parent>
     <artifactId>injection</artifactId>
     <groupId>org.exoplatform.injection</groupId>
-    <version>4.1.x-SNAPSHOT</version>
+    <version>4.2.x-SNAPSHOT</version>
   </parent>
   <groupId>org.exoplatform.injection</groupId>
   <artifactId>injection-forum</artifactId>
@@ -23,10 +23,6 @@
     <dependency>
       <groupId>org.exoplatform.core</groupId>
       <artifactId>exo.core.component.organization.api</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.exoplatform.forum</groupId>
-      <artifactId>forum-answer-service</artifactId>
     </dependency>
     <dependency>
       <groupId>org.exoplatform.forum</groupId>

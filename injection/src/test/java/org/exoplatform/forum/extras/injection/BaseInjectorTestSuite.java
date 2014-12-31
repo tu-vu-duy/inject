@@ -34,7 +34,6 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(Suite.class)
 @SuiteClasses({ 
   InjectorForumTestCase.class, 
-  InjectorFAQTestCase.class,
   InjectorPollTestCase.class
 })
 @ConfigTestCase(BaseInjectorTestCase.class)
